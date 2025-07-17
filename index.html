@@ -1805,7 +1805,6 @@ function restoreProgress() {
 
 window.addEventListener('DOMContentLoaded', restoreProgress);
 </script>
-
 <script>
 function clearSpecificSections() {
   if (confirm('Clear all text fields, image placeholders, graphs, and PDFs in Command, Squads, Marine Unit, and CIU?')) {
@@ -1840,6 +1839,44 @@ function clearSpecificSections() {
     }
   }
 }
+</script>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAoj1CzKTNxdIRmw5HUWmzrkJJrT7BXzu4",
+    authDomain: "monthly--report.firebaseapp.com",
+    projectId: "monthly--report",
+    storageBucket: "monthly--report.appspot.com",
+    messagingSenderId: "725029428023",
+    appId: "1:725029428023:web:cd53fbc0cd1282e47018b2",
+    measurementId: "G-5MSJ8EB0M7"
+  };
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    if (form) {
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => { data[key] = value; });
+        try {
+          await db.collection("reports").add(data);
+          alert("Form submitted successfully!");
+          form.reset();
+        } catch (error) {
+          console.error("Error adding document: ", error);
+          alert("Submission failed. See console for details.");
+        }
+      });
+    }
+  });
 </script>
 </body>
 </html>
